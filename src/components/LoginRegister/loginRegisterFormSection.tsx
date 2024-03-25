@@ -2,15 +2,51 @@
 import Image from "next/image";
 import logo from "../../../public/logopink.png";
 import FormPicker from "./formPicker";
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import TLoginRegister from "@/types/loginRegisterFormType";
 import LoginForm from "./loginForm";
 import RegisterForm from "./registerForm";
+import TLoginInputs from "@/types/loginInputType";
+import TRegisterInputs from "@/types/registerInputType";
+import { login } from "@/util/login";
+import { useRouter } from "next/navigation";
 export default function LoginRegisterFormSection() {
   const [form, setFormType] = useState<TLoginRegister>("LOGIN");
+  const router = useRouter();
+  const [formInputs, setFormInputs] = useState<TLoginInputs | TRegisterInputs>(
+    {} as TLoginInputs
+  );
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    //İnput Validatorları sonra yaz
+    if (form === "LOGIN") {
+      const result = await login(formInputs);
+      window.userEvents.writeJWT(result);
+      router.push("/home");
+    }
+  };
+  useEffect(() => {
+    if (form === "LOGIN") {
+      setFormInputs({
+        email: "",
+        password: "",
+      });
+    } else {
+      setFormInputs({
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        confirmpassword: "",
+      });
+    }
+  }, [form]);
   return (
     <section className={loginRegisterFormSectionStyles.formSection}>
-      <form className={loginRegisterFormSectionStyles.formWrapper}>
+      <form
+        className={loginRegisterFormSectionStyles.formWrapper}
+        onSubmit={handleSubmit}
+      >
         <div className={loginRegisterFormSectionStyles.logoWrapper}>
           <Image
             src={logo}
@@ -23,7 +59,11 @@ export default function LoginRegisterFormSection() {
         </div>
         <div className={loginRegisterFormSectionStyles.form}>
           <FormPicker setFormType={setFormType} form={form} />
-          {form == "LOGIN" ? <LoginForm /> : <RegisterForm/>}
+          {form == "LOGIN" ? (
+            <LoginForm setFormInputs={setFormInputs} />
+          ) : (
+            <RegisterForm setFormInputs={setFormInputs} />
+          )}
         </div>
       </form>
     </section>
@@ -36,5 +76,5 @@ const loginRegisterFormSectionStyles = {
   logoWrapper: "w-full flex justify-center items-center gap-4",
   logo: "w-[50px]",
   brandName: "text-3xl tracking-widest font-normal",
-  form:"flex flex-col gap-4"
+  form: "flex flex-col gap-4",
 };

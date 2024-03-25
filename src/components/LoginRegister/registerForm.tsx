@@ -1,23 +1,60 @@
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Input from "../shared/Input";
+import TLoginInputs from "@/types/loginInputType";
+import TRegisterInputs from "@/types/registerInputType";
 
-export default function RegisterForm() {
+interface IRegisterForm {
+  setFormInputs: Dispatch<SetStateAction<TLoginInputs | TRegisterInputs>>;
+}
+export default function RegisterForm({ setFormInputs }: IRegisterForm) {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFormInputs((state) => ({ ...state, name: event.target.value }));
+  };
+  const handleSurnameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFormInputs((state) => ({ ...state, surname: event.target.value }));
+  };
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFormInputs((state) => ({ ...state, email: event.target.value }));
+  };
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFormInputs((state) => ({ ...state, password: event.target.value }));
+  };
+  const handleConfirmPasswordChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    setFormInputs((state) => ({
+      ...state,
+      confirmpassword: event.target.value,
+    }));
+  };
   return (
     <div className={registerFormStyles.formWrapper}>
       <div className={registerFormStyles.nameSurnameWrapper}>
         <Input
           labelText="Name"
           styleOpts={{ inputWrapper: registerFormStyles.halfInput }}
+          inputOpts={{ onChange: handleNameChange }}
         />
         <Input
           labelText="Surname"
           styleOpts={{
             inputWrapper: registerFormStyles.halfInput,
           }}
+          inputOpts={{ onChange: handleSurnameChange }}
         />
       </div>
-      <Input labelText="E-mail" inputOpts={{ type: "email" }} />
-      <Input labelText="Password" inputOpts={{ type: "password" }} />
-      <Input labelText="Pasword Correct" inputOpts={{ type: "password" }} />
+      <Input
+        labelText="E-mail"
+        inputOpts={{ type: "email", onChange: handleEmailChange }}
+      />
+      <Input
+        labelText="Password"
+        inputOpts={{ type: "password", onChange: handlePasswordChange }}
+      />
+      <Input
+        labelText="Pasword Confirm"
+        inputOpts={{ type: "password", onChange: handleConfirmPasswordChange }}
+      />
       <button className={registerFormStyles.registerButton}>REGISTER</button>
     </div>
   );
