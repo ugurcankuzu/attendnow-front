@@ -3,10 +3,10 @@ import Input from "../shared/Input";
 import TLoginInputs from "@/types/loginInputType";
 import TRegisterInputs from "@/types/registerInputType";
 
-interface ILoginForm {
+interface ILoginFormComponent {
   setFormInputs: Dispatch<SetStateAction<TLoginInputs | TRegisterInputs>>;
 }
-export default function LoginForm({ setFormInputs }: ILoginForm) {
+export default function LoginForm({ setFormInputs }: ILoginFormComponent) {
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormInputs((state) => ({ ...state, email: event.target.value }));
   };

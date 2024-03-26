@@ -3,10 +3,12 @@ import Input from "../shared/Input";
 import TLoginInputs from "@/types/loginInputType";
 import TRegisterInputs from "@/types/registerInputType";
 
-interface IRegisterForm {
+interface IRegisterFormComponent {
   setFormInputs: Dispatch<SetStateAction<TLoginInputs | TRegisterInputs>>;
 }
-export default function RegisterForm({ setFormInputs }: IRegisterForm) {
+export default function RegisterForm({
+  setFormInputs,
+}: IRegisterFormComponent) {
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormInputs((state) => ({ ...state, name: event.target.value }));
   };
