@@ -4,6 +4,7 @@ import getLecturerById from "@/util/getLecturerById";
 import TLecturer from "@/types/lecturerType";
 import { useEffect, useState } from "react";
 import GreetingsCard from "@/components/Home/greetingsCard";
+import NavigationCard from "@/components/Home/navigationCard";
 
 export default function Home() {
   const [lecturer, setLecturer] = useState<TLecturer>({} as TLecturer);
@@ -17,10 +18,8 @@ export default function Home() {
     <main className={HomeStyles.mainWrapper}>
       {lecturer && (
         <>
-          <GreetingsCard
-            lecturerName={lecturer.lecturerName}
-            lecturerSurname={lecturer.lecturerSurname}
-          />
+          <GreetingsCard lecturerName={lecturer.lecturerName} />
+          <NavigationCard />
         </>
       )}
     </main>

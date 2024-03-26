@@ -16,7 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div
+          className="w-full h-[30px] absolute top-0 right-0"
+          style={{ WebkitAppRegion: "drag" }}
+        ></div>
+        {children}
+      </body>
     </html>
   );
 }
