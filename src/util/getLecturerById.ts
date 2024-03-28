@@ -8,6 +8,6 @@ export default async function getLecturerById(jwtTkn: string) {
   );
   if (response.ok) {
     const result = await response.json();
-    return result;
+    return result.lecturer;
   }
 }

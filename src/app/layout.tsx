@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { JwtContextProvider } from "@/store/jwtContext";
+import { LecturerContextProvider } from "@/store/lecturerContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div
-          className="w-full h-[30px] absolute top-0 right-0"
-          style={{ WebkitAppRegion: "drag" }}
-        ></div>
-        {children}
+        <JwtContextProvider>
+          <LecturerContextProvider>
+            <div
+              className="w-full h-[30px] absolute top-0 right-0"
+              style={{ WebkitAppRegion: "drag" }}
+            ></div>
+            {children}
+          </LecturerContextProvider>
+        </JwtContextProvider>
       </body>
     </html>
   );

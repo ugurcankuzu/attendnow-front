@@ -1,12 +1,9 @@
+import { useLecturerContext } from "@/store/lecturerContext";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-interface IGreetingsCardComponent {
-  lecturerName: string;
-}
-export default function GreetingsCard({
-  lecturerName,
-}: IGreetingsCardComponent) {
+export default function GreetingsCard() {
+  const lecturerContext = useLecturerContext();
   return (
     <div className={GreetingsCardStyles.cardWrapper}>
       <div className={GreetingsCardStyles.cardContent}>
@@ -15,7 +12,9 @@ export default function GreetingsCard({
         </div>
         <div className={GreetingsCardStyles.contentSection}>
           <p className={GreetingsCardStyles.subContent}>Welcome</p>
-          <p className={GreetingsCardStyles.mainContent}>{lecturerName}!</p>
+          <p className={GreetingsCardStyles.mainContent}>
+            {lecturerContext.lecturer.lecturerName}!
+          </p>
         </div>
       </div>
     </div>
