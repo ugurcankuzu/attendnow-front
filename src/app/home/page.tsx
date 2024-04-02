@@ -1,14 +1,10 @@
 "use client";
 
-import getLecturerById from "@/util/getLecturerById";
-import TLecturer from "@/types/lecturerType";
-import { useEffect, useState } from "react";
-import GreetingsCard from "@/components/Home/greetingsCard";
-import NavigationCard from "@/components/Home/navigationCard";
-import ActiveSessionsCard from "@/components/Home/activeSessionsCard";
 import QuickStartSessionCard from "@/components/Home/quickStartSessionCard";
 import { useJwtContext } from "@/store/jwtContext";
 import { useLecturerContext } from "@/store/lecturerContext";
+import getLecturerById from "@/util/getLecturerById";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [sessionId, setSessionId] = useState<string>("");
@@ -25,18 +21,7 @@ export default function Home() {
       });
     }
   }, []);
-  return (
-    <main className={HomeStyles.mainWrapper}>
-      {lecturerContext.lecturer.lecturerName && (
-        <>
-          <GreetingsCard />
-          <NavigationCard />
-          <ActiveSessionsCard sessionId={sessionId} />
-          <QuickStartSessionCard setSessionId={setSessionId} />
-        </>
-      )}
-    </main>
-  );
+  return <QuickStartSessionCard setSessionId={setSessionId} />;
 }
 
 const HomeStyles = {

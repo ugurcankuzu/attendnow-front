@@ -1,16 +1,20 @@
 "use client";
 import QRDisplay from "@/components/CreateSession/qrdisplay";
+import StudentList from "@/components/CreateSession/studentList";
+import SharedLayout from "@/components/shared/sharedLayout";
 import { useJwtContext } from "@/store/jwtContext";
+import { useLecturerContext } from "@/store/lecturerContext";
 import createSession from "@/util/createSession";
 import getActiveSession from "@/util/getActiveSession";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SessionStart() {
-  const selectedCourse = useSearchParams().get("selectedCourse") as string;
+  const courseId = useSearchParams().get("courseId") as string;
   const [serverAddress, setServerAddress] = useState<string>("");
   const [sessionId, setSessionId] = useState<string>("");
   const jwtContext = useJwtContext();
+  const lecturerContext = useLecturerContext();
   useEffect(() => {
     //Aktif bir session var mı kontrol et.
     //Aktif session yoksa oluştur varsa onu display et.
@@ -22,18 +26,23 @@ export default function SessionStart() {
       if (sessionId) {
         setSessionId(sessionId);
       } else {
-        createSession(jwtContext.jwtToken, selectedCourse).then(
+        createSession(jwtContext.jwtToken, courseId).then(
           (sessionId: string) => {
             setSessionId(sessionId);
           }
         );
       }
     });
-  }, []);
+  }, [jwtContext.jwtToken, courseId]);
   return (
-    <main className="mt-24">
-      <QRDisplay serverAddress={serverAddress} sessionId={sessionId} />
-    </main>
+    <>
+      {sessionId && courseId && (
+        <>
+          <QRDisplay serverAddress={serverAddress} sessionId={sessionId} />
+          <StudentList courseId={courseId} sessionId={sessionId} />
+        </>
+      )}
+    </>
   );
 }
 

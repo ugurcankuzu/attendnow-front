@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
 import CoursePicker from "../shared/coursePicker";
+import getRoute from "@/util/getRoute";
 
 interface IQuickStartSessionCardComponent {
   setSessionId: Dispatch<SetStateAction<string>>;
@@ -12,8 +13,9 @@ export default function QuickStartSessionCard({
   setSessionId,
 }: IQuickStartSessionCardComponent) {
   const [selectedCourse, setSelectedCourse] = useState<TCourses>({
-    _id:"",
+    _id: "",
     courseName: "",
+    students: [],
   });
 
   return (
@@ -33,7 +35,10 @@ export default function QuickStartSessionCard({
             selectedCourse={selectedCourse}
           />
           <Link
-            href={"/sessionStart?selectedCourse=" + selectedCourse._id}
+            href={
+              getRoute("New Session").routeHref +
+              `?courseId=${selectedCourse._id}`
+            }
             className={QuickStartSessionCardStyles.ctaButton}
           >
             <FontAwesomeIcon icon={faArrowRight} />

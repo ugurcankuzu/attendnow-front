@@ -15,17 +15,17 @@ const routes: TRoute[] = [
   },
   {
     routeName: "History",
-    routeHref: "/history",
+    routeHref: "/home/history",
     routeIcon: faHistory,
   },
   {
     routeName: "My Courses",
-    routeHref: "/courses",
+    routeHref: "/home/courses",
     routeIcon: faBook,
   },
   {
     routeName: "New Session",
-    routeHref: "/sessionStart",
+    routeHref: "/home/sessionStart",
     routeIcon: faPlus,
   },
   {

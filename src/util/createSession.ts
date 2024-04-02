@@ -1,4 +1,7 @@
-export default async function createServer(jwtToken: string, courseId: string) {
+export default async function createSession(
+  jwtToken: string,
+  courseId: string
+) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_HOST_URL +
       "/lecturer/createSession?courseId=" +
