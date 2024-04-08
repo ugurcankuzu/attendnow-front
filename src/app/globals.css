@@ -2,3 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  --sb-track-color: #fdf7fa;
+  --sb-thumb-color: #d67ab140;
+  --sb-size: 8px;
+}
+
+::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 5px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}

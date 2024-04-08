@@ -7,7 +7,6 @@ import getLecturerById from "@/util/getLecturerById";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [sessionId, setSessionId] = useState<string>("");
   const jwtContext = useJwtContext();
   const lecturerContext = useLecturerContext();
   useEffect(() => {
@@ -21,7 +20,7 @@ export default function Home() {
       });
     }
   }, []);
-  return <QuickStartSessionCard setSessionId={setSessionId} />;
+  return <QuickStartSessionCard />;
 }
 
 const HomeStyles = {

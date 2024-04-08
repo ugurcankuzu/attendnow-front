@@ -1,3 +1,7 @@
+import { useJwtContext } from "@/store/jwtContext";
+import closeSession from "@/util/closeSession";
+import { useRouter } from "next/navigation";
+import { MouseEvent } from "react";
 import QRCode from "react-qr-code";
 
 interface IQRDisplayComponent {
@@ -8,6 +12,11 @@ export default function QRDisplay({
   sessionId,
   serverAddress,
 }: IQRDisplayComponent) {
+  const jwtContext = useJwtContext();
+  const router = useRouter();
+  const handleCloseSession = (event: MouseEvent<HTMLButtonElement>) => {
+    closeSession(jwtContext.jwtToken, router);
+  };
   return (
     <>
       {sessionId && (
@@ -24,7 +33,12 @@ export default function QRDisplay({
             <p className={QRDisplayStyles.contentText}>
               Scan this QR code to go to the attendance form.
             </p>
-            <button className={QRDisplayStyles.endButton}>End Session</button>
+            <button
+              onClick={handleCloseSession}
+              className={QRDisplayStyles.endButton}
+            >
+              End Session
+            </button>
           </div>
         </div>
       )}

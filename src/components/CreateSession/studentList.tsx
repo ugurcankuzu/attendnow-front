@@ -2,9 +2,10 @@ import { useJwtContext } from "@/store/jwtContext";
 import TAttendancy from "@/types/attendancyType";
 import TStudent from "@/types/studentType";
 import checkAttendancy from "@/util/checkAttendancy";
+import checkSuspicious from "@/util/checkSuspicious";
 import getStudentsInCourse from "@/util/getStudentsInCourse";
 import getStudentsInSession from "@/util/getStudentsInSession";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faExclamation, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
@@ -45,11 +46,15 @@ export default function StudentList({ courseId, sessionId }: IStudentList) {
             <div className={StudentListStyles.studentWrapper} key={index}>
               <p className={StudentListStyles.no}>{student.universityNumber}</p>
               <p className={StudentListStyles.studentName}>
-                {student.name} {student.surname}
+                {student.name} {student.surname}{" "}
               </p>
               <span className={StudentListStyles.statusIcon}>
                 {checkAttendancy(student._id, sessionStudents) ? (
-                  <FontAwesomeIcon icon={faCheck} />
+                  checkSuspicious(student._id, sessionStudents) ? (
+                    <FontAwesomeIcon icon={faExclamationCircle} />
+                  ) : (
+                    <FontAwesomeIcon icon={faCheck} />
+                  )
                 ) : null}
               </span>
             </div>
@@ -68,6 +73,6 @@ const StudentListStyles = {
   studentWrapper:
     "py-2 flex transition-bg duration-[.25s] hover:bg-slate-300/30",
   no: "basis-1/4",
-  studentName: "basis-1/2 line-clamp-1",
-  statusIcon: "basis-1/4 text-end",
+  studentName: "basis-1/2 line-clamp-1 ",
+  statusIcon: "basis-1/4 flex justify-end items-center",
 };

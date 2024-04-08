@@ -6,12 +6,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import CoursePicker from "../shared/coursePicker";
 import getRoute from "@/util/getRoute";
 
-interface IQuickStartSessionCardComponent {
-  setSessionId: Dispatch<SetStateAction<string>>;
-}
-export default function QuickStartSessionCard({
-  setSessionId,
-}: IQuickStartSessionCardComponent) {
+export default function QuickStartSessionCard() {
   const [selectedCourse, setSelectedCourse] = useState<TCourses>({
     _id: "",
     courseName: "",

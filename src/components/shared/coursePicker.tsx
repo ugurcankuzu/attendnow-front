@@ -47,11 +47,7 @@ export default function CoursePicker({
     ).then((courses) => setResolvedCourses(courses));
   }, [lecturerContext.lecturer.lecturerCourses]);
   return (
-    <div
-      onClick={handleCourseList}
-      className={CoursePickerStyles.wrapper}
-      onBlur={handleBlur}
-    >
+    <div onClick={handleCourseList} className={CoursePickerStyles.wrapper}>
       <div className={CoursePickerStyles.picker}>
         {!selectedCourse.courseName && (
           <>
@@ -67,8 +63,8 @@ export default function CoursePicker({
       </div>
 
       {isPickerVisible && (
-        <div className={CoursePickerStyles.courseList}>
-          <ul>
+        <div className={CoursePickerStyles.courseList} onBlur={handleBlur}>
+          <ul className={CoursePickerStyles.listWrapper}>
             {resolvedCourseList &&
               resolvedCourseList.map((course, index) => (
                 <li
@@ -94,6 +90,8 @@ const CoursePickerStyles = {
   picker: "flex justify-center items-center gap-4 text-sky-magenta",
   pickerText: "",
   courseList:
-    "absolute bg-white shadow w-full left-0 top-full rounded-md p-2 flex flex-col mt-2",
-  courseItem: "text-left line-clamp-1 text-sky-magenta",
+    "absolute bg-white shadow w-full left-0 top-full rounded-md p-2 flex flex-col mt-2 ",
+  listWrapper: "flex flex-col gap-4",
+  courseItem:
+    "text-left line-clamp-1 text-sky-magenta transition-bg duration-[.25s] hover:bg-slate-300/30",
 };

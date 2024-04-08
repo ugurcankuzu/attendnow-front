@@ -32,6 +32,7 @@ export default function SessionStart() {
           }
         );
       }
+      console.log(sessionId)
     });
   }, [jwtContext.jwtToken, courseId]);
   return (

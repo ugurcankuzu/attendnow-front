@@ -31,7 +31,7 @@ export default function NavigationCard() {
 }
 
 const NavigationCardStyles = {
-  cardWrapper: "col-span-2 col-start-1 row-span-6 bg-white rounded-md shadow py-2",
+  cardWrapper: "col-span-2 col-start-1 row-span-6 bg-white rounded-md shadow p-4",
   ul: " w-full h-full flex flex-col gap-4 justify-start",
   navLinks: "hover:bg-slate-300/30 transition-bg duration-[.25s]",
   listItem: " flex items-center px-2 py-1 gap-4",
