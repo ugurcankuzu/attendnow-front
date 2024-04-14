@@ -2,36 +2,41 @@ import routes from "@/util/route";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import ErrorCard from "./errorCard";
 
 export default function NavigationCard() {
   return (
     <div className={NavigationCardStyles.cardWrapper}>
       <ul className={NavigationCardStyles.ul}>
-        {routes.map((route, index) => (
-          <Link
-            href={route.routeHref}
-            key={index}
-            className={NavigationCardStyles.navLinks}
-          >
-            <li className={NavigationCardStyles.listItem}>
-              <div className={NavigationCardStyles.iconWrapper}>
-                <FontAwesomeIcon icon={route.routeIcon as IconProp} />
-              </div>
-              <div className={NavigationCardStyles.contentWrapper}>
-                <p className={NavigationCardStyles.content}>
-                  {route.routeName}
-                </p>
-              </div>
-            </li>
-          </Link>
-        ))}
+        {routes
+          .filter((route) => route.routeName !== "New Session")
+          .map((route, index) => (
+            <Link
+              href={route.routeHref}
+              key={index}
+              className={NavigationCardStyles.navLinks}
+            >
+              <li className={NavigationCardStyles.listItem}>
+                <div className={NavigationCardStyles.iconWrapper}>
+                  <FontAwesomeIcon icon={route.routeIcon as IconProp} />
+                </div>
+                <div className={NavigationCardStyles.contentWrapper}>
+                  <p className={NavigationCardStyles.content}>
+                    {route.routeName}
+                  </p>
+                </div>
+              </li>
+            </Link>
+          ))}
+        <ErrorCard />
       </ul>
     </div>
   );
 }
 
 const NavigationCardStyles = {
-  cardWrapper: "col-span-2 col-start-1 row-span-6 bg-white rounded-md shadow p-4",
+  cardWrapper:
+    "col-span-2 col-start-1 row-span-6 bg-white rounded-md shadow p-4",
   ul: " w-full h-full flex flex-col gap-4 justify-start",
   navLinks: "hover:bg-slate-300/30 transition-bg duration-[.25s]",
   listItem: " flex items-center px-2 py-1 gap-4",

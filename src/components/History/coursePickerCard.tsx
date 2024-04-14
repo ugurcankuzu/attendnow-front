@@ -25,5 +25,5 @@ export default function CoursePickerCard({
 const CoursePickerCardStyles = {
   pickerWrapper:
     "col-span-6 row-span-1 row-start-1 col-start-3 bg-white flex justify-between items-center px-4 shadow rounded-md",
-  cardTitle: "text-xl text-sky-magenta",
+  cardTitle: "text-2xl text-sky-magenta",
 };

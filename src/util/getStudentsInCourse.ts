@@ -11,5 +11,7 @@ export default async function getStudentsInCourse(
   if (response.ok) {
     const result = await response.json();
     return result.students;
+  }else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

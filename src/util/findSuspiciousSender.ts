@@ -6,8 +6,6 @@ export default function findSuspiciousSender(
   attendancies: TAttendancy[],
   courseStudents: TStudent[]
 ) {
-  console.log("triggered");
-  console.log(studentId, attendancies, courseStudents);
   const attendancyOwner = attendancies.find(
     (attendedStudent) => attendedStudent.studentId === studentId
   );

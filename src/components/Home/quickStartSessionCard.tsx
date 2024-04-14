@@ -2,9 +2,10 @@ import TCourses from "@/types/courseType";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 import CoursePicker from "../shared/coursePicker";
 import getRoute from "@/util/getRoute";
+import { useRouter } from "next/navigation";
 
 export default function QuickStartSessionCard() {
   const [selectedCourse, setSelectedCourse] = useState<TCourses>({
@@ -12,7 +13,12 @@ export default function QuickStartSessionCard() {
     courseName: "",
     students: [],
   });
-
+  const router = useRouter();
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    router.push(
+      getRoute("New Session").routeHref + `?courseId=${selectedCourse._id}`
+    );
+  };
   return (
     <div className={QuickStartSessionCardStyles.cardWrapper}>
       <div className={QuickStartSessionCardStyles.contentSection}>
@@ -29,15 +35,13 @@ export default function QuickStartSessionCard() {
             setSelectedCourse={setSelectedCourse}
             selectedCourse={selectedCourse}
           />
-          <Link
-            href={
-              getRoute("New Session").routeHref +
-              `?courseId=${selectedCourse._id}`
-            }
+          <button
+            onClick={handleClick}
             className={QuickStartSessionCardStyles.ctaButton}
+            disabled={selectedCourse._id ? false : true}
           >
             <FontAwesomeIcon icon={faArrowRight} />
-          </Link>
+          </button>
         </div>
       </div>
     </div>
@@ -53,5 +57,5 @@ const QuickStartSessionCardStyles = {
   controllerSection: "flex-1 flex items-end justify-end",
   controllerWrapper: "flex gap-4 items-center",
   ctaButton:
-    "bg-white rounded-full w-[25px] h-[25px] flex justify-center items-center p-4 text-sky-magenta",
+    "bg-white rounded-full w-[25px] h-[25px] flex justify-center items-center p-4 text-sky-magenta disabled:opacity-50",
 };

@@ -10,5 +10,7 @@ export default async function closeSession(
   );
   if (response.ok) {
     router.push("/home");
+  } else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

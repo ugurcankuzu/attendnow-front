@@ -1,3 +1,4 @@
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
 import { useJwtContext } from "@/store/jwtContext";
 import TAttendancy from "@/types/attendancyType";
 import TSession from "@/types/sessionType";
@@ -8,6 +9,7 @@ import convertTimetoReadable from "@/util/convertTimetoReadable";
 import findSuspiciousSender from "@/util/findSuspiciousSender";
 import getStudentsInCourse from "@/util/getStudentsInCourse";
 import getStudentsInSession from "@/util/getStudentsInSession";
+import handleBadResponse from "@/util/handleBadResponse";
 import {
   faCheck,
   faExclamation,
@@ -15,6 +17,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface ISessionDetailCardComponent {
@@ -28,13 +31,15 @@ export default function SessionDetailCard({
   const jwtContext = useJwtContext();
   const [attendedStudents, setAttendedStudents] = useState<TAttendancy[]>([]);
   const [courseStudents, setCourseStudents] = useState<TStudent[]>([]);
+  const errorContext = useGlobalErrorContext();
+  const router = useRouter();
   useEffect(() => {
-    getStudentsInSession(session._id, jwtContext.jwtToken).then((students) =>
-      setAttendedStudents(students)
-    );
-    getStudentsInCourse(selectedCourse, jwtContext.jwtToken).then(
-      (courseStudents) => setCourseStudents(courseStudents)
-    );
+    getStudentsInSession(session._id, jwtContext.jwtToken)
+      .then((students) => setAttendedStudents(students))
+      .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
+    getStudentsInCourse(selectedCourse, jwtContext.jwtToken)
+      .then((courseStudents) => setCourseStudents(courseStudents))
+      .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
   }, [session._id]);
   return (
     <div className={SessionDetailCardStyles.cardWrapper}>

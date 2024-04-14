@@ -1,13 +1,11 @@
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
 import { useJwtContext } from "@/store/jwtContext";
 import TSession from "@/types/sessionType";
 import convertTimetoReadable from "@/util/convertTimetoReadable";
 import getSessionHistory from "@/util/getSessionHistory";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState
-} from "react";
+import handleBadResponse from "@/util/handleBadResponse";
+import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface ISessionListCardComponent {
   courseId: string;
@@ -19,11 +17,12 @@ export default function SessionListCard({
 }: ISessionListCardComponent) {
   const jwtContext = useJwtContext();
   const [sessions, setSessions] = useState<TSession[]>([]);
-
+  const router = useRouter();
+  const errorContext = useGlobalErrorContext();
   useEffect(() => {
-    getSessionHistory(courseId, jwtContext.jwtToken).then((sessions) =>
-      setSessions(sessions)
-    );
+    getSessionHistory(courseId, jwtContext.jwtToken)
+      .then((sessions) => setSessions(sessions))
+      .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
   }, [courseId]);
   return (
     <div className={SessionListCardStyles.cardWrapper}>

@@ -1,5 +1,7 @@
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
 import { useJwtContext } from "@/store/jwtContext";
 import closeSession from "@/util/closeSession";
+import handleBadResponse from "@/util/handleBadResponse";
 import { useRouter } from "next/navigation";
 import { MouseEvent } from "react";
 import QRCode from "react-qr-code";
@@ -14,8 +16,11 @@ export default function QRDisplay({
 }: IQRDisplayComponent) {
   const jwtContext = useJwtContext();
   const router = useRouter();
+  const errorContext = useGlobalErrorContext();
   const handleCloseSession = (event: MouseEvent<HTMLButtonElement>) => {
-    closeSession(jwtContext.jwtToken, router);
+    closeSession(jwtContext.jwtToken, router).catch((err) =>
+      handleBadResponse(err, errorContext.dispatch, router)
+    );
   };
   return (
     <>

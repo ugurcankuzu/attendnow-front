@@ -2,7 +2,6 @@ export default async function getCourseDetailsById(
   courseId: Array<string>,
   jwtToken: string
 ) {
-  // HATANIN SEBEBİ MUHTEMELEN JWT TOKEN. YARIN SABAH BU APP İÇİN BİR CONTEXT API YAZ JWT'Yİ TÜM UYGULAMAYA ORDAN DAĞIT
   const response = await fetch(
     process.env.NEXT_PUBLIC_HOST_URL + "/lecturer/getCoursesById",
     {
@@ -17,5 +16,7 @@ export default async function getCourseDetailsById(
   if (response.ok) {
     const result = await response.json();
     return result.courses;
+  } else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

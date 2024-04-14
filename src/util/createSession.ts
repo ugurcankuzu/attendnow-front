@@ -16,5 +16,7 @@ export default async function createSession(
   if (response.ok) {
     const result = await response.json();
     return result.sessionId;
+  } else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

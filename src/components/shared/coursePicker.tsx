@@ -1,9 +1,12 @@
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
 import { useJwtContext } from "@/store/jwtContext";
 import { useLecturerContext } from "@/store/lecturerContext";
 import TCourses from "@/types/courseType";
 import getCourseDetailsById from "@/util/getCourseDetailsById";
+import handleBadResponse from "@/util/handleBadResponse";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import {
   Dispatch,
   FocusEvent,
@@ -28,6 +31,8 @@ export default function CoursePicker({
   const jwtContext = useJwtContext();
   const lecturerContext = useLecturerContext();
   const [isPickerVisible, setPickerVisibile] = useState<boolean>(false);
+  const router = useRouter();
+  const errorContext = useGlobalErrorContext();
   const handleCourseList = (event: MouseEvent<HTMLDivElement>) => {
     event.currentTarget.focus();
     setPickerVisibile((state) => !state);
@@ -44,7 +49,9 @@ export default function CoursePicker({
     getCourseDetailsById(
       lecturerContext.lecturer.lecturerCourses,
       jwtContext.jwtToken
-    ).then((courses) => setResolvedCourses(courses));
+    )
+      .then((courses) => setResolvedCourses(courses))
+      .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
   }, [lecturerContext.lecturer.lecturerCourses]);
   return (
     <div onClick={handleCourseList} className={CoursePickerStyles.wrapper}>

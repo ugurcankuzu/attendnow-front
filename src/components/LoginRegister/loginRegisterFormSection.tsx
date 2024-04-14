@@ -10,19 +10,42 @@ import TLoginInputs from "@/types/loginInputType";
 import TRegisterInputs from "@/types/registerInputType";
 import { login } from "@/util/login";
 import { useRouter } from "next/navigation";
+import validateLoginInputs from "@/util/validateLoginInputs";
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
+import handleBadResponse from "@/util/handleBadResponse";
 export default function LoginRegisterFormSection() {
   const [form, setFormType] = useState<TLoginRegister>("LOGIN");
   const router = useRouter();
   const [formInputs, setFormInputs] = useState<TLoginInputs | TRegisterInputs>(
     {} as TLoginInputs
   );
+  const [isSubmit, setSubmit] = useState<boolean>(false);
+  const errorContext = useGlobalErrorContext();
+
+  
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //İnput Validatorları sonra yaz
+    setSubmit(true);
     if (form === "LOGIN") {
-      const result = await login(formInputs);
-      window.userEvents.writeJWT(result);
-      router.push("/home");
+      const validationResult = validateLoginInputs(formInputs);
+      if (!validationResult.isValidEmail || !validationResult.isValidPassword) {
+        errorContext.dispatch({
+          type: "SHOW_ERROR",
+          error: new Error("Please enter a valid email or password"),
+        });
+        setSubmit(false);
+        setTimeout(() => errorContext.dispatch({ type: "HIDE_ERROR" }), 5000);
+      } else {
+        login(
+          formInputs,
+          setSubmit,
+          window.userEvents.writeJWT,
+          window.userEvents.onWriteJWTEnd,
+          router
+        )
+          .catch((err) => handleBadResponse(err, errorContext.dispatch, router))
+          .finally(() => setSubmit(false));
+      }
     }
   };
   useEffect(() => {
@@ -60,7 +83,7 @@ export default function LoginRegisterFormSection() {
         <div className={loginRegisterFormSectionStyles.form}>
           <FormPicker setFormType={setFormType} form={form} />
           {form == "LOGIN" ? (
-            <LoginForm setFormInputs={setFormInputs} />
+            <LoginForm setFormInputs={setFormInputs} isSubmit={isSubmit} />
           ) : (
             <RegisterForm setFormInputs={setFormInputs} />
           )}

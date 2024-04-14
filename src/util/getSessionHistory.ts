@@ -11,5 +11,7 @@ export default async function getSessionHistory(
   if (response.ok) {
     const result = await response.json();
     return result.sessions;
+  } else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

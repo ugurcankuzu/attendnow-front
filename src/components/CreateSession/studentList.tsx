@@ -1,3 +1,4 @@
+import { useGlobalErrorContext } from "@/store/globalErrorContext";
 import { useJwtContext } from "@/store/jwtContext";
 import TAttendancy from "@/types/attendancyType";
 import TStudent from "@/types/studentType";
@@ -5,8 +6,13 @@ import checkAttendancy from "@/util/checkAttendancy";
 import checkSuspicious from "@/util/checkSuspicious";
 import getStudentsInCourse from "@/util/getStudentsInCourse";
 import getStudentsInSession from "@/util/getStudentsInSession";
-import { faCheck, faExclamation, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import handleBadResponse from "@/util/handleBadResponse";
+import {
+  faCheck,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IStudentList {
@@ -17,16 +23,22 @@ export default function StudentList({ courseId, sessionId }: IStudentList) {
   const [courseStudents, setCourseStudents] = useState<TStudent[]>([]);
   const [sessionStudents, setSessionStudents] = useState<TAttendancy[]>([]);
   const jwtContext = useJwtContext();
+  const errorContext = useGlobalErrorContext();
+  const router = useRouter();
+
   useEffect(() => {
     const interval = setInterval(() => {
-      getStudentsInSession(sessionId, jwtContext.jwtToken).then(
-        (attendedStudents) => setSessionStudents(attendedStudents)
-      );
+      getStudentsInSession(sessionId, jwtContext.jwtToken)
+        .then((attendedStudents) => setSessionStudents(attendedStudents))
+        .catch((err) => {
+          handleBadResponse(err, errorContext.dispatch, router);
+          clearInterval(interval);
+        });
     }, 5000);
     if (courseStudents.length === 0) {
-      getStudentsInCourse(courseId, jwtContext.jwtToken).then((students) =>
-        setCourseStudents(students)
-      );
+      getStudentsInCourse(courseId, jwtContext.jwtToken)
+        .then((students) => setCourseStudents(students))
+        .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
     }
     return () => {
       clearInterval(interval);

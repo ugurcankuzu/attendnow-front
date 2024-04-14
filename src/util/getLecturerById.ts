@@ -9,5 +9,7 @@ export default async function getLecturerById(jwtTkn: string) {
   if (response.ok) {
     const result = await response.json();
     return result.lecturer;
+  } else if (response.status === 400 || response.status === 401) {
+    throw new Error("AUTH_ERROR");
   }
 }

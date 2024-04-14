@@ -20,7 +20,7 @@ const routes: TRoute[] = [
   },
   {
     routeName: "My Courses",
-    routeHref: "/home/courses",
+    routeHref: "/home/my-courses",
     routeIcon: faBook,
   },
   {
