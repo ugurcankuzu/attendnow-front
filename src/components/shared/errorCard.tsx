@@ -38,5 +38,5 @@ const ErrorCardStyles = {
   iconWrapper: "text-2xl text-sky-magenta",
   contentWrapper: "flex flex-col",
   subTitle: "text-sm text-sky-magenta font-bold",
-  errorContent: "",
+  errorContent: "text-xs",
 };
