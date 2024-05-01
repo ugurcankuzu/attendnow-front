@@ -81,7 +81,7 @@ const StudentListStyles = {
     "col-span-6 row-span-3 bg-white rounded-md shadow p-4 flex flex-col gap-4",
   cardTitle: "text-4xl text-sky-magenta",
   counter: "ml-4 text-sky-magenta/30",
-  studentListWrapper: "flex flex-col flex-1 divide-y",
+  studentListWrapper: "flex flex-col flex-1 divide-y overflow-y-auto",
   studentWrapper:
     "py-2 flex transition-bg duration-[.25s] hover:bg-slate-300/30",
   no: "basis-1/4",
