@@ -1,4 +1,5 @@
 "use client";
+import QRFaceDetection from "@/components/CreateSession/qrFaceDetection";
 import QRDisplay from "@/components/CreateSession/qrdisplay";
 import StudentList from "@/components/CreateSession/studentList";
 import { useGlobalErrorContext } from "@/store/globalErrorContext";
@@ -34,17 +35,20 @@ export default function SessionStart() {
             .then((sessionId: string) => {
               setSessionId(sessionId);
             })
-            .catch((err) => handleBadResponse(err,errorContext.dispatch,router));
+            .catch((err) =>
+              handleBadResponse(err, errorContext.dispatch, router)
+            );
         }
         console.log(sessionId);
       })
-      .catch((err) => handleBadResponse(err,errorContext.dispatch,router));
+      .catch((err) => handleBadResponse(err, errorContext.dispatch, router));
   }, [jwtContext.jwtToken, courseId]);
   return (
     <>
       {sessionId && courseId && (
         <>
           <QRDisplay serverAddress={serverAddress} sessionId={sessionId} />
+          <QRFaceDetection serverAddress={serverAddress} />
           <StudentList courseId={courseId} sessionId={sessionId} />
         </>
       )}

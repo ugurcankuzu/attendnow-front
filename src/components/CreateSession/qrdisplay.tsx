@@ -29,6 +29,7 @@ export default function QRDisplay({
           <div className={QRDisplayStyles.qrWrapper}>
             <QRCode
               value={`http://${serverAddress}:5000?sessionId=${sessionId}`}
+              className={QRDisplayStyles.qrDisplay}
             />
           </div>
           <div className={QRDisplayStyles.contentWrapper}>
@@ -53,12 +54,13 @@ export default function QRDisplay({
 
 const QRDisplayStyles = {
   cardWrapper:
-    "col-span-6 row-span-4 col-start-3 row-start-1 bg-white shadow rounded-md flex p-2",
+    "col-span-6 row-span-2 col-start-3 row-start-1 bg-white shadow rounded-md flex p-2",
   qrWrapper: "flex flex-1 justify-center items-center",
-  contentWrapper: "flex flex-col justify-center flex-1 gap-4 p-4",
+  qrDisplay: "w-36",
+  contentWrapper: "flex flex-col justify-center flex-1 gap-2 p-4",
   contentTitle:
-    "text-4xl font-bold bg-gradient-pink-green-cross bg-clip-text text-transparent filter-shadow",
-  contentText: "font-normal text-lg",
+    "text-2xl font-bold bg-gradient-pink-green-cross bg-clip-text text-transparent filter-shadow",
+  contentText: "font-normal text-md",
   endButton:
     "bg-gradient-pink-green-cross py-2 px-1 rounded-md text-white font-bold text-lg shadow-md",
 };
